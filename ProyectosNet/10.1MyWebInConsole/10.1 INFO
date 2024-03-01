@@ -1,0 +1,61 @@
+10.1. - DEMO: Arranque e inicialización
+
+Crear una aplicación web partiendo de una aplicación simple de consola.
+
+En Program.cs se asume que es código de arranque, por lo que no es necesario incluir la clase Program,
+ni namespace (se considera que es root), ni el método Main.
+También está usando las directivas globales de using.
+
+1) Ver contenido del csproj:
+Tiene un elemento Project con un PropertyGroup con propiedades del proyecto.
+Tal como está, es una aplicación de consola estándar.
+
+2) Vamos a hacer un cambio para indicarle que queremos usar el SDK Web
+en lugar del de consola. Esto se consigue añadiendo en Sdk un .Web:
+<Project Sdk="Microsoft.NET.Sdk.Web">
+Al guardar, nos indica que hay cambios que necesitan recargar el proyecto.
+Al recargar, nos genera la estrutura de carpetas habitual en VS. Esto es porque el SDK marca
+qué herramientas y paqueterías se van a añdir por defecto.
+
+3) Añadimos el código en Program para levantar una web.
+De esta forma, transformamos una aplicación de consola en una ASP.NET Core.
+
+4) El código no es muy útil porque no permite inyectar dependencias, si bien levanta un servidor
+web en solo 3 líneas.
+
+5) Extendemos el código anterior. En el ejemplo anterior creábamos una app directamente.
+Ahora se usa un builder que crea el app.
+El builder permite inyectar dependencias.
+
+6) El código tiene acceso al entorno de ejecución actual. (Ver versión 3).
+El EnvironmentName se puede setear de varias formas:
+    a) En VS, en Propiedades -> Depurar -> General -> Abrir interfaz de perfiles de inicio -> Variables de entorno.
+    b) En launchSettings.json, modificamos la variable ASPNETCORE_ENVIRONMENT. Esta modificación Tambiénse aplica
+    si ejecutamos la aplicación desde consola con dotnet run.
+    El fichero anterior no es obligatorio. Si no lo tenemos, Kestrel lee las variables de entorno y busca la
+    de ASPNETCORE_ENVIRONMENT.
+    Podemos setear la variable de entorno en PowerShell con:
+    $env:ASPNETCORE_ENVIRONMENT="Console"
+    Si no tiene valor asignado, toma el valor por defecto "Production". Podemos comprobarlo dejándolo vacío con:
+    $env:ASPNETCORE_ENVIRONMENT=""   
+
+7) Podemos utilizar las variable de entorno para que el código haga cosas diferentes
+o se aplique configuración distinta en función de ellas (Ver versión 4).
+Podemos usar métodos que comprueban si el entorno es alguno de los predeterminados
+(IsDevelopment, por ejemplo) o usar IsEnvironment("nombre_entorno")
+
+
+
+
+    NOTA:
+    En PowerShell, $env:VARIABLE="valor" se utiliza para asignar un valor a una variable de entorno específica dentro del contexto de PowerShell. Aquí hay una explicación detallada:
+
+    $env:: $env: es un prefijo especial en PowerShell que se utiliza para acceder a las variables de entorno del sistema. Cuando se utiliza $env:, PowerShell sabe que estás accediendo a una variable de entorno.
+
+    VARIABLE: VARIABLE es el nombre de la variable de entorno a la que deseas asignar un valor. Por ejemplo, si deseas asignar un valor a la variable de entorno ASPNETCORE_ENVIRONMENT, reemplazarías VARIABLE con ASPNETCORE_ENVIRONMENT.
+
+    "valor": "valor" es el valor que deseas asignar a la variable de entorno. Puede ser cualquier valor que desees asignar a la variable.
+
+    Entonces, cuando ejecutas $env:VARIABLE="valor" en PowerShell, estás asignando el valor "valor" a la variable de entorno especificada (VARIABLE). Por ejemplo, si ejecutas $env:ASPNETCORE_ENVIRONMENT="Development", estarías asignando el valor "Development" a la variable de entorno ASPNETCORE_ENVIRONMENT.
+
+    Es importante tener en cuenta que esta asignación solo es válida dentro del contexto de PowerShell actual y no afecta a las variables de entorno del sistema en sí. Si deseas que los cambios en las variables de entorno sean persistentes entre sesiones de PowerShell o afecten a otros procesos en el sistema, debes utilizar métodos específicos para establecer las variables de entorno del sistema, como el panel de control de Windows o el comando setx en la línea de comandos.
