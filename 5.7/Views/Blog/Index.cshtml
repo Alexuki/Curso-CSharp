@@ -1,0 +1,20 @@
+@*Sintaxis de comentario*@
+@model IEnumerable<Post>
+
+<h2>Latest posts</h2>
+<ul>
+    @foreach(var post in Model)
+    {
+        <li>
+            <h3>@post.Title</h3>
+            <div>Post by @post.Author on @post.Date.ToShortDateString()</div>
+            <a href="/blog/@post.Slug">Acceder al post completo usando ruta harcodeada...</a>
+            <br>
+            <a asp-area="" asp-controller="Blog" asp-action="ViewPost" asp-route-slug="@post.Slug">Acceder al post completo usando tag-helper...</a>
+            @if (post.Comments.Any())
+            {
+                <div>@post.Comments.Count() comments</div>
+            }
+        </li>
+    }
+</ul>

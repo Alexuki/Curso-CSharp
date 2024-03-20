@@ -1,0 +1,28 @@
+﻿@using System.Globalization
+@using System.Linq
+@model System.Collections.Generic.IEnumerable<Lab01.Models.Entities.ArchiveEntry>
+@{
+    ViewData["Title"] = "Archive index";
+}
+<h2>
+    @ViewData["Title"]
+</h2>
+<ul>
+    @foreach (var year in Model.Select(entry => entry.Year).Distinct())
+    {
+        <li>
+            <h3>@year</h3>
+            <ul>
+                @foreach (var entry in Model.Where(entry => entry.Year == year))
+                {
+                    <li>
+                        @{
+                            var linkText = CultureInfo.InvariantCulture.DateTimeFormat.GetMonthName(entry.Month) + " (" + entry.PostCount + ")";
+                        }
+                        @Html.ActionLink(linkText, "Archive", new {year = year, month = entry.Month})
+                    </li>
+                }
+            </ul>
+        </li>
+    }
+</ul>
