@@ -1,0 +1,58 @@
+﻿@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
+@{
+    ViewData["Title"] = "Home";
+}
+<div class="row align-items-end">
+    <div class="col-sm">
+        <h1>Contacts</h1>
+    </div>
+    <div class="col-sm text-right align-baseline">
+        <a id="refreshButton" href="#">
+            <span class="fa fa-sync"></span> Refresh
+        </a>
+        <span id="loading" style="font-size: 50%; display: none">Loading...</span>
+    </div>
+</div>
+
+<table id="contacts-table" class="table table-striped">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+    <tfoot>
+        <tr>
+            <td colspan="3">
+                <h4>Create new</h4>
+                <form>
+                    <input type="text" id="name" class="form-control mb-2 w-25" placeholder="Name" />
+                    <input type="text" id="phone" class="form-control mb-2 w-25" placeholder="Phone" />
+                    <input type="submit" id="createButton" class="btn btn-primary" value="Create" />
+                </form>
+            </td>
+        </tr>
+    </tfoot>
+</table>
+
+
+
+
+@section Scripts {
+<script src="~/js/ContactListApiClient.js" asp-append-version="true"></script>
+<script src="~/js/ContactListUi.js" asp-append-version="true"></script>
+<script>
+    $(function () {
+        var contactList = new ContactListUi("@Configuration["ApiBaseUri"]");
+        $("#refreshButton").on("click", contactList.reloadContactsClicked);
+        $("#contacts-table").on("click", "button.delete", contactList.deleteContactClicked);
+        $("#contacts-table").on("click", "a.show", contactList.showContactClicked);
+        $("#createButton").on("click", contactList.createContactClicked);
+
+        $("#refreshButton").trigger("click"); // Force first load
+    });
+</script>
+}

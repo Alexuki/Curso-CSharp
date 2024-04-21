@@ -1,0 +1,80 @@
+﻿@using Lab03.ViewModels.Users
+@model UserViewModel
+@{
+    ViewBag.Title = "Edit user";
+    var inputHtmlAttributes = new { @@class ="form-control" };
+}
+<h2>Edit user</h2>
+
+@using (Html.BeginForm())
+{
+    @* <div class="form-group">
+        @Html.LabelFor(model => model.Name)
+        @Html.ValidationMessageFor(model => model.Name)
+        @Html.EditorFor(model => model.Name, inputHtmlAttributes)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Nickname)
+        @Html.ValidationMessageFor(model => model.Nickname)
+        @Html.EditorFor(model => model.Nickname, inputHtmlAttributes)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Type)
+        @Html.ValidationMessageFor(model => model.Type)
+        <!-- @Html.DropDownListFor(model => model.Type, new SelectList(ViewBag.UserTypes, "Id", "Name"), inputHtmlAttributes) -->
+        @Html.EditorFor(model => model.Type, inputHtmlAttributes)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Email)
+        @Html.ValidationMessageFor(model => model.Email)
+        @Html.EditorFor(model => model.Email, inputHtmlAttributes)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Password)
+        @Html.ValidationMessageFor(model => model.Password)
+        @Html.PasswordFor(model => model.Password, inputHtmlAttributes)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.RePassword)
+        @Html.ValidationMessageFor(model => model.RePassword)
+        @Html.PasswordFor(model => model.RePassword, inputHtmlAttributes)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Birthdate)
+        @Html.ValidationMessageFor(model => model.Birthdate)
+        @Html.EditorFor(model => model.Birthdate, inputHtmlAttributes)
+    </div>
+
+    <div class="form-group">
+        @Html.CheckBoxFor(model => model.Enabled)
+        @Html.LabelFor(model => model.Enabled)
+    </div> *@
+
+    @* (14) *@
+    @Html.EditorForModel()
+
+    <input type="submit" value="Submit" class="btn btn-primary" />
+}
+
+@section Scripts
+{
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+
+    @* (5) *@
+    <!-- Usa la ruta donde hayas guardado los archivos de script en tu proyecto -->
+    <!-- NOTA: La parte ~/ indica la raíz del proyecto en el servidor,
+    lo que generalmente se traduce en la carpeta raíz del sitio web cuando se despliega en un servidor web.-->
+    <link href="~/lib/bootstrap-datepicker/css/bootstrap-datepicker.css" rel="stylesheet" />
+    <script src="~/lib/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+    <script>
+        $(function () {
+            $("input.picker").datepicker();
+        });
+    </script>
+}

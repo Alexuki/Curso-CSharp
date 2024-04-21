@@ -1,0 +1,18 @@
+﻿@using Lab03.Extensions.HtmlHelpers
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+
+@* (21) *@
+@Html.ImageActionLink(
+    action: "edit",
+    controller: "user",
+    parameters: null,
+    imagePath: "/images/img-off.png",
+    hoverImage: "/images/img-on.png",
+    altText: "Edit user")

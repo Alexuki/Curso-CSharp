@@ -1,0 +1,18 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<h2>Multiplication tables</h2>
+<ul>
+    @for (var i = 1; i <= 20; i++)
+    {
+        <li>
+            <a href="@Url.Action("Multiplication", "Math", new { number = i })">@i</a>
+        </li>
+    }
+</ul>
+
+@section Footer
+{
+    <div>Home page @await Html.PartialAsync("_Copyright")</div>
+}

@@ -1,0 +1,13 @@
+﻿@using Lab03.Models.Entities
+@model int
+@{
+    IEnumerable<UserType> userTypes = ViewBag.UserTypes;
+    var listItems = from s in userTypes
+                    select new SelectListItem()
+                    {
+                        Text = s.Name,
+                        Value = s.Id.ToString(),
+                        Selected = Model == s.Id
+                    };
+}
+@Html.DropDownList("", listItems, new { @class = "form-control"})

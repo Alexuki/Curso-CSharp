@@ -1,0 +1,279 @@
+
+9.12 PRÁCTICA 1: Creación de APIs HTTP
+En esta práctica vamos a implementar una API HTTP en una aplicación ASP.NET Core MVC
+y a consumir sus servicios desde una aplicación de consola.
+Para ello, implementaremos la API web para una sencilla libreta de contactos accesible
+a través de HTTP. Sobre ella podremos realizar operaciones básicas tipo CRUD
+(crear, consultar y eliminar).
+Crearemos también algunos clientes de esta API que nos permitirán gestionar los
+contactos desde distintos entornos (consola y web).
+
+
+1. Implementación de la API
+1) Crear solución "Lab01" y en ella un proyecto llamado Lab01.Api de tipo ASP.NET Core
+Web API. En este proyecto sólo vamos a implementar servicios, por lo que podemos eliminarle
+todos los controladores, vistas y archivos que no necesitamos de la plantilla.
+2) Añadir la clase Contact.
+3) Implementar un repositorio en memoria de contactos en Services/ContactRepository.
+4) Crear la interfaz IContactRepository y registrarla en el inyector de dependencias.
+5) Crear ContactsController, que recibe una instancia de IContactRepository por
+inyección de dependencias.
+6) Nuestra API va aser de tipo REST. La colección de recursos (contactos) estará disponible
+en la URI /api/contacts. Cada contacto individual será accesible a través de direcciones
+que incluyen su identificador único, como en /api/contacts/18.
+Implementar acciones para responder a las siguientes  peticiones y utilizar códigos de estado HTTP
+para indicar el resultado de las operaciones:
+
+Verbo HTTP      URI                 Acción
+GET	            /api/contacts	    Obtiene todos los contactos
+GET	            /api/contacts/18	Obtiene el contacto 18
+POST	        /api/contacts	    Crea un contacto, retorna el objeto creado e indica en el encabezado Location la URI de acceso al mismo
+DELETE	        /api/contacts/18	Elimina el contacto 18
+
+Implementar y probar las acciones una por una con Fiddler o Postman.
+7) permitir el uso de XML para intercambiar información con los clientes para entrada y salida.
+8) Ejecutar la aplicación y comprobar el funcionamiento de la negociación de contenidos:
+  - Crear un contacto enviando sus datos mediante JSON.
+  - Acceder a los datos del contacto recién creado obteniendo la información formateada en XML.
+  - Realizar una mezcla de ambos: crear un contacto enviando los datos en XML y recibiendo el resultado en JSON.
+
+
+
+2. Implementación del cliente de consola
+Cliente simple para la API de contactos anterior. Será una aplicación de consola que muestra una línea de comandos
+en que pueden introducirse las siguientes instrucciones para operar con el repositorio remoto de contactos:
+
+  - LIST: muestra por pantalla todos los contactos.
+  - CREATE [name], [phone]: crea un contacto nuevo con el nombre y teléfono indicado (separados por una coma).
+  - DELETE [id]: elimina el contacto cuyo identificador se indica.
+  - SHOW [id]: muestra el contacto especificado.
+  - HELP: muestra la ayuda.
+  - QUIT: finaliza la ejecución de la aplicación.
+
+9) Añadir a la solución un proyecto de tipo consola para .NET Core llamado Lab01.ConsoleClient.
+10) Crear clase cliente de nuestra API (ContactListApiClient) que permita aislar al resto de componentes
+de la aplicación de las particularidades de las llamadas al servicio remoto.
+Se utiliza una clase ContactDto para representar los objetos que se envían y reciben del servidor.
+Aplicamos el atributo [JsonPropertyName] para forzar el uso de minúsculas en las propiedades cuando los
+objetos de este tipo sean serializados/deserializados a JSON.
+11) Introducir el código de la clase Program del proyecto. Se trata del bucle principal de la aplicación,
+que permanecerá iterando hasta que el usuario introduzca la orden "QUIT".
+12) Implementar la clase CommandHandler, encargada de procesar los comandos.
+13) Poner en marcha el servicio (desde Visual Studio podemos hacerlo seleccionándolo e iniciándolo sin
+depuración con Control+F5) y usar el cliente para asegurar que su funcionamiento sea correcto.
+Este es un sistema distribuido con ASP.NET Core MVC.
+
+
+
+3. Implementación de cliente Web con jQuery
+Implementar un cliente Web (HTML) de la API de contactos. El objetivo será crear una web muy básica donde
+veamos los contactos actuales y podamos crear nuevos y eliminar los existentes, utilizando llamadas AJAX
+directas contra el servicio web.
+14) Añadir a la solución un nuevo proyecto ASP.NET Core MVC llamado Lab01.Web.
+15) Sustituir el código de la página principal, en la vista Index, por:
+
+@{
+    ViewData["Title"] = "Home";
+}
+<div class="row align-items-end">
+    <div class="col-sm">
+        <h1>Contacts</h1>
+    </div>
+    <div class="col-sm text-right align-baseline">
+        <a id="refreshButton" href="#">
+            <span class="fa fa-sync"></span> Refresh
+        </a>
+        <span id="loading" style="font-size: 50%; display: none">Loading...</span>
+    </div>
+</div>
+
+<table id="contacts-table" class="table table-striped">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+    <tfoot>
+        <tr>
+            <td colspan="3">
+                <h4>Create new</h4>
+                <form>
+                    <input type="text" id="name" class="form-control mb-2 w-25" placeholder="Name" />
+                    <input type="text" id="phone" class="form-control mb-2 w-25" placeholder="Phone" />
+                    <input type="submit" id="createButton" class="btn btn-primary" value="Create" />
+                </form>
+            </td>
+        </tr>
+    </tfoot>
+</table>
+
+
+
+
+@section Scripts {
+<script src="~/js/ContactListApiClient.js" asp-append-version="true"></script>
+<script src="~/js/ContactListUi.js" asp-append-version="true"></script>
+<script>
+    $(function () {
+        var contactList = new ContactListUi();
+        $("#refreshButton").on("click", contactList.reloadContactsClicked);
+        $("#contacts-table").on("click", "button.delete", contactList.deleteContactClicked);
+        $("#contacts-table").on("click", "a.show", contactList.showContactClicked);
+        $("#createButton").on("click", contactList.createContactClicked);
+
+        $("#refreshButton").trigger("click"); // Force first load
+    });
+</script>
+}
+
+Esta página de inicio se divide en dos partes:
+
+  - La primera, compuesta exclusivamente por marcado HTML, define la interfaz principal del cliente
+  de la agenda de contactos.
+  - La segunda, implementada en forma de sección Razor, carga un par de scripts externos e inicializa
+  los eventos de la página. Los scripts son:
+
+  - ContactListApiClient.js es una clase que encapsula las llamadas al API de contactos.
+  - ContactListUi.js incluye los manejadores de eventos y la lógica que regula el funcionamiento de la interfaz.
+
+16) Crear el archivo ContactListApiClient.js e implementar el código siguiente, completando las partes que faltan:
+
+var ContactListApiClient = function (apiBaseUri) {
+    this.reloadContacts = function () {
+        return $.ajax({
+            url: apiBaseUri,
+            type: 'get'
+        });
+    };
+
+    this.deleteContact = function (contactId) {
+        return $.ajax({
+            url: apiBaseUri+contactId,
+            type: 'delete'
+        });
+    };
+
+    this.getContact = function (contactId) {
+        // TODO
+    };
+
+    this.createContact = function (name, phone) {
+        // TODO
+    }
+};
+
+NOTA: Desde los métodos de la clase retornamos directamente el objeto que devuelve la llamada a $ajax(),
+y no el resultado de realizar dicha llamada
+
+17) Implementar la clase ContactListUi que gestiona la interfaz, usando el siguiente código y completando las
+secciones comentadas:
+
+var ContactListUi = function() {
+    // TODO: actualiza la URL de la API:
+    var apiClient = new ContactListApiClient("https://localhost:7179/api/contacts/");
+    var $tableBody = $("#contacts-table tbody");
+    var $refreshButton = $("#refreshButton");
+    var $loading = $("#loading");
+    var $nameField = $("#name");
+    var $phoneField = $("#phone");
+    var self = this;
+
+    self.reloadContactsClicked = function () {
+        showLoading(true);
+        apiClient.reloadContacts()
+            .done(function(result) {
+                if (!result || !result.length) {
+                    $tableBody.html("<tr>" +
+                        "<td colspan='3' class='text-center alert alert-warning'>" +
+                        "No contacts</td></tr>"
+                    );
+                } else {
+                    var rows = "";
+                    for (var i = 0; i < result.length; i++) {
+                        rows += getContactRow(result[i]);
+                    }
+                    $tableBody.html(rows);
+                }
+            }).always(function() {
+                showLoading(false);
+            });
+        return false;
+    };
+
+    self.showContactClicked = function () {
+        showLoading(true);
+        var id = $(this).parents("tr[data-id]").data("id");
+        apiClient.getContact(id)
+            .done(function(contact) {
+                alert("Contact details:\n\n  Id: " + contact.id +
+                    "\n  Name: " + contact.name +
+                    "\n  Phone: " + contact.phone);
+            }).always(function() {
+                showLoading(false);
+            });
+        return false;
+    };
+
+    self.deleteContactClicked = function () {
+        var id = $(this).parents("tr[data-id]").data("id");
+        // TODO:
+        // - Mostrar el mensaje "loading".
+        // - LLamar a la API enviándole el id
+        // - Si hay error, mostrarlo en un alert()
+        // - Si va bien, eliminar al contacto en la tabla así:
+        //       $tableBody.find("tr[data-id=" + id + "]").remove();
+        // - En cualquier caso, ocultar el mensaje loading.
+
+        return false;
+    };
+
+    self.createContactClicked = function () {
+        var name = $nameField.val();
+        var phone = $phoneField.val();
+        // TODO:
+        // - Mostrar el mensaje "loading".
+        // - Llamar a la API enviándole name y phone
+        // - Si hay un error, mostrarlo en un alert()
+        // - Si va bien, añadir el nuevo contacto a la lista así:
+        //        $tableBody.append(getContactRow(newContact));
+        // - En cualquier caso, ocultar el mensaje loading.
+
+        return false;
+    }
+
+    // Private functions
+
+    function showLoading(show) {
+        if (show) {
+            $refreshButton.hide();
+            $loading.show();
+        } else {
+            $loading.hide();
+            $refreshButton.show();
+        }
+    }
+
+    function getContactRow(contact) {
+        return "<tr data-id=" + contact.id + ">" +
+                            "<td class='text-right'>" + contact.id + "</td>" +
+                            "<td><a href='#' class='show'>" + contact.name + "</a></td>" +
+                            "<td class='text-right'>" +
+                            "<button class='btn btn-sm btn-danger delete'>Delete</button>" +
+                            "</td></tr>";
+    }
+};
+
+NOTA: Todos los manejadores de eventos utilizan el componente cliente del API desarrollado
+en el punto anterior, y capturan los resultados de las llamadas utilizando los métodos done(),
+fail() y always() para actualizar el interfaz.
+
+18) Al probar la aplicación web, seguro que encontraremos errores por intentar realizar peticiones
+cross-domain. Podremos verlos en la consola del navegador. Para solucionarlos, tendremos que habilitar
+CORS en el servicio API.
+
+19) A la vez que usamos el cliente web, lanzaremos también el cliente de consola que desarrollamos
+anteriormente. Comprobamos que ambas aplicaciones están atacando al mismo servicio API y, por tanto,
+operando sobre el mismo conjunto de datos.

@@ -1,0 +1,29 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<environment names="Development">
+    Hello, developers!
+</environment>
+<environment names="Production, Staging">
+    Hello, users or testers!
+</environment>
+
+<br />
+
+<p>
+    Current time: @DateTime.Now.ToString("T")
+</p>
+<cache expires-after="TimeSpan.FromSeconds(5)">
+    Cached time (after 5 seconds): @DateTime.Now.ToString("T")
+</cache>
+<cache expires-sliding="TimeSpan.FromSeconds(3)">
+    Cached time (expires-sliding 3 seconds): @DateTime.Now.ToString("T")
+</cache>
+
+<br />
+
+@Html.ActionLink("Go to product 18", "show", "products", new { id=18, category="Computers"}, new {@class="link"})
+<br />
+<a asp-controller="products" asp-action="show" asp-route-id="18" asp-route-category="Computers" class="link">Go to product 18</a>
+

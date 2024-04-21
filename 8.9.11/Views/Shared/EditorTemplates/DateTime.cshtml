@@ -1,0 +1,10 @@
+﻿@model DateTime?
+
+<div>
+    @Html.TextBox(
+                "",
+                Model == null ? "" : Model.Value.ToString("MM/dd/yyyy"),
+                new { maxlength = 10, @class = "picker form-control", style = "display: inline" }
+              )
+    (mm/dd/yyyy)
+</div>

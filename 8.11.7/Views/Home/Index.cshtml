@@ -1,0 +1,45 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<cache expires-after="TimeSpan.FromSeconds(30)">
+    @{
+        await Task.Delay(5000);
+    }
+    <div class="jumbotron">
+        <h1>Welcome to MVC!</h1>
+        <h2>@DateTime.Now.ToString("")</h2>
+    </div>
+</cache>
+
+
+<div class="row">
+    <div class="col-12 text-center">
+        <h2>Content watcher as an attribute</h2>
+    </div>
+    <div class="col-6">
+        <h4>Code:</h4>
+        <pre>&lt;p block-words="yellow, blue"&gt;
+    I have a yellow car, but I'd like it to be blue.
+&lt;/p&gt;</pre>
+    </div>
+    <div class="col-6">
+        <h4>Result:</h4>
+        <pre block-words="yellow, blue">I have a yellow car, but I'd like it to be blue.</pre>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12 text-center">
+        <h2>Content watcher as a tag</h2>
+    </div>
+    <div class="col-6">
+        <h4>Code:</h4>
+        <pre>&lt;content-watcher block-words="friend, meet, asap"&gt;
+    Hello, my friend! I'd like to meet you asap!
+&lt;/content-watcher&gt;</pre>
+    </div>
+    <div class="col-6">
+        <h4>Result:</h4>
+        <pre><content-watcher block-words="friend, meet, asap">Hello, my friend! I'd like to meet you asap!</content-watcher></pre>
+    </div>
+</div>

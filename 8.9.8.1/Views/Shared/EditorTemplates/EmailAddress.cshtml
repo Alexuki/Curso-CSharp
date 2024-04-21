@@ -1,0 +1,8 @@
+@model string
+
+@{
+    var isRequired = ViewData.ModelMetadata.IsRequired;
+    var style = isRequired ? "background-color: lightyellow" : "";
+}
+
+@Html.TextBox("", Model, new { @class = "form-control", placeholder = "Enter email", style = style })

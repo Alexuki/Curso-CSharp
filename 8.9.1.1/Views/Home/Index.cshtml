@@ -1,0 +1,36 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+@* 
+(1) Forma de crear enlaces que funciona inicialmente.
+*@
+<h2>
+    <a href="/home/privacy">Go to Privacy</a>
+</h2>
+
+@* 
+(4) Uso de helper ActionLink. Indicamos: texto, acción y controlador.
+En este caso, el controlador no es necesario indicarlo al ser la vista actual del controlador.
+*@
+<h2>
+    @Html.ActionLink("Go to Privacy", "Privacy")
+</h2>
+
+
+@* 
+(6) Los parámetros que necesita se pasan en un objeto, con las propiedades definidas
+de acuerdo a los parámetros de la acción.
+*@
+<h2>
+    @Html.ActionLink("Say hello to John", "Say", new { message="Hello", to="John" })
+</h2>
+
+
+@* 
+(7) Ejemplo de añadir style al enlace para que se genere en color rojo.
+*@
+<h2>
+    @Html.ActionLink("Say hello to John", "Say", new { message="Hello", to="John" }, new { style="color:red" })
+</h2>
+

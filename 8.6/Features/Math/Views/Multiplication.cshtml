@@ -1,0 +1,28 @@
+﻿@model int
+@{
+    ViewData["Title"] = "Multiplication";
+}
+<h2>Multiplication table of @Model</h2>
+<table>
+    @for (int i = 0; i <= 10; i++)
+    {
+        string style = i % 2 != 0 ? null : "background-color: #e0e0e0";
+        <tr style="@style">
+            <td>@Model x @i =</td>
+            <td>@(Model * i)</td>
+        </tr>
+    }
+</table>
+<hr />
+<a href="javascript:history.back()" class="btn btn-primary"><span class="glyphicon glyphicon-arrow-left"></span> Go back</a>
+
+@section Footer
+{
+    @* (11) *@
+    <div>
+        Multiplication table of @Model - &copy; @DateTime.Now.Year All rights reserved
+    </div>
+
+
+    <div>Multiplication table of @Model @await Html.PartialAsync("_Copyright")</div>
+}

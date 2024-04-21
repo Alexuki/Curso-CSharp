@@ -1,0 +1,46 @@
+@model CreateUserViewModel
+@{
+    ViewData["Title"] = "Create user";
+}
+
+<h2>@ViewData["Title"]</h2>
+<p>
+    @DateTime.Now.ToString("T");
+</p>
+
+@*Aquí añadimos el formulario*@
+
+@using (Html.BeginForm())
+{
+        <div>
+            @Html.LabelFor(m => m.Username) @Html.ValidationMessageFor(m => m.Username)<br>
+            @Html.TextBoxFor(m => m.Username)
+        </div>
+        <div>
+            @Html.LabelFor(m => m.FullName) @Html.ValidationMessageFor(m => m.FullName)<br>
+            @Html.TextBoxFor(m => m.FullName)
+        </div>
+        <div>
+            @Html.LabelFor(m => m.Email) @Html.ValidationMessageFor(m => m.Email)<br>
+            @Html.TextBoxFor(m => m.Email)
+        </div>
+        <div>
+            @Html.LabelFor(m => m.Password) @Html.ValidationMessageFor(m => m.Password)<br>
+            @Html.PasswordFor(m => m.Password)
+        </div>
+        <div>
+            @Html.LabelFor(m => m.RePassword) @Html.ValidationMessageFor(m => m.RePassword)<br>
+            @Html.PasswordFor(m => m.RePassword)
+        </div>
+        <div>
+            @Html.CheckBoxFor(m => m.Enabled)
+            @Html.LabelFor(m => m.Enabled)
+        </div>
+        <hr />
+        <button>Create</button>
+    }
+
+    @section scripts
+    {
+        @await Html.PartialAsync("_ValidationScriptsPartial")
+    }

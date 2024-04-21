@@ -1,0 +1,75 @@
+@model int
+@{
+    ViewData["Title"] = $"Multiplication table of {@Model}";
+}
+
+<h2>Multiplication table of @Model</h2>
+@{
+    <ul>
+        @for(int i = 1; i <= 10; i++)
+        {
+            // Está en modo código. No es necesario poner "@" en Model
+            var result = Model * i;
+            
+            // La siguiente parte está en modo marcado. necesita usar "@" para acceder a las variables
+            <li>
+                @Model * @i = @result;
+            </li>
+        }
+    </ul>
+
+<h3>Igual que el anterior pero modificando el bloque de cálculo</h3>
+    <ul>
+        @for(int i = 1; i <= 10; i++)
+        {
+            // No se usa una variable intermedia result
+            /*
+            Esta forma da resultado incorrecto (ejemplo de lo que muestra: 3 x 1 = 3 * i)
+            porque el parser no es capaz de determinar dónde acaba el modo C# y dónde empieza el modo marcado en la expresión dentro de <li>
+                Para ello, envolvemos la expresión entre paréntesis.
+            <li>
+                @Model * @i = @Model * i
+            </li>
+            */
+
+            // Marcamos explícitamente 
+            <li>
+                @Model * @i = @(Model * i)
+            </li>
+        }
+    </ul>
+
+<h3>Añadir lógica de presentación a las filas</h3>
+    <ul>
+        @for(int i = 1; i <= 10; i++)
+        {
+            var style = i % 2 == 0 ? "background-color: #f0f0f0" : "";
+
+            <li style="@style" >
+                @Model * @i = @(Model * i)
+            </li>
+        }
+    </ul>
+
+<h3>Añadir lógica de presentación a las filas y texto en los múltiplos de 10</h3>
+    <ul>
+        @for(int i = 1; i <= 10; i++)
+        {
+            var style = i % 2 == 0 ? "background-color: #f0f0f0" : "";
+
+            <li style="@style" >
+                @Model * @i = @(Model * i)
+                @if((Model * i) % 10 == 0)
+                {
+                    //lógica dentro de un bloque C#. Está intentado compilarlo, por lo que la siguiente línea no es código válido
+                    //Diez!
+
+                    //Para solucionarlo, indicaremos explícitamente al compilador Razor que volvemos al modo marcado, añadiendo una etiqueta
+                    //<span>Diez!</span> //Se envía la etiqueta span
+                    //<text>Diez!</text> //No se envían etiquetas adicionales. También se puede usar la opción siguiente
+                    @:Diez! 
+                }
+            </li>
+        }
+    </ul>
+}

@@ -1,0 +1,63 @@
+﻿@model UserViewModel
+@{
+    ViewBag.Title = "Edit user";
+    var inputHtmlAttributes = new { @@class ="form-control" };
+}
+<h2>Edit user</h2>
+
+@using (Html.BeginForm())
+{
+    <div class="form-group">
+        @Html.LabelFor(model => model.Name)
+        @Html.ValidationMessageFor(model => model.Name)
+        @Html.TextBoxFor(model => model.Name, inputHtmlAttributes)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Nickname)
+        @Html.ValidationMessageFor(model => model.Nickname)
+        @Html.TextBoxFor(model => model.Nickname, inputHtmlAttributes)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Type)
+        @Html.ValidationMessageFor(model => model.Type)
+        @Html.DropDownListFor(model => model.Type, new SelectList(Model.UserTypes, "Id", "Name"), inputHtmlAttributes)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Email)
+        @Html.ValidationMessageFor(model => model.Email)
+        @Html.TextBoxFor(model => model.Email, inputHtmlAttributes)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Password)
+        @Html.ValidationMessageFor(model => model.Password)
+        @Html.PasswordFor(model => model.Password, inputHtmlAttributes)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.RePassword)
+        @Html.ValidationMessageFor(model => model.RePassword)
+        @Html.PasswordFor(model => model.RePassword, inputHtmlAttributes)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Birthdate)
+        @Html.ValidationMessageFor(model => model.Birthdate)
+        @Html.TextBoxFor(model => model.Birthdate, inputHtmlAttributes)
+    </div>
+
+    <div class="form-group">
+        @Html.CheckBoxFor(model => model.Enabled)
+        @Html.LabelFor(model => model.Enabled)
+    </div>
+
+    <input type="submit" value="Submit" class="btn btn-primary" />
+}
+
+@section Scripts
+{
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

@@ -1,0 +1,18 @@
+@model PdfFile
+
+<h1>PDF GENERATOR</h1>
+
+<form method="post" action="@Url.Action()">
+    <div class="form-group">
+        <label>File Name (PDF)</label>
+        <input type="text" name="FileName" value="@Model.FileName" class="form-control">
+        @Html.ValidationMessage("FileName")
+    </div>
+    <div class="form-group">
+        <label>Text</label>
+        <textarea name="text" class="form-control">@Model.Text</textarea>
+        @Html.ValidationMessage("Text")
+    </div>
+    <hr />
+    <button class="btn btn-primary">Download</button>
+</form>

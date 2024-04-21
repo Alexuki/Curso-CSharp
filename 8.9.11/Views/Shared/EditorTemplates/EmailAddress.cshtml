@@ -1,0 +1,9 @@
+﻿@using System.ComponentModel.DataAnnotations
+@model string
+@{
+    var isRequired = ViewData.ModelMetadata.IsRequired;
+    var maxlength = this.ViewData.ModelMetadata.ValidatorMetadata.OfType<StringLengthAttribute>().FirstOrDefault()?.MaximumLength.ToString() ?? "";
+}
+
+@(isRequired ? "*" : "")
+@Html.TextBox("", Model, new { @class = "form-control", maxlength, placeholder="address@server.com" })

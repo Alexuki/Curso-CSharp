@@ -1,0 +1,20 @@
+@*
+4) En la plantilla el nombre de la propiedad que se está editando
+deja en blanco porque se desconoce cuál es.
+Razor se encargará de reemplazarlo por el nombre de la propiedad
+correcta cuando se encargue de utilizarla. Le indicaremos un valor
+por defecto que le llegará desde el modelo, y unos atributos HTML.
+Html.TextBox(nombre_propiedad, valor_por_defecto, atributos_HTML).
+5) Añadir el bloque var isRequired...
+
+*@
+
+@model string
+
+@{
+    var isRequired = ViewData.ModelMetadata.IsRequired;
+    var style = isRequired ? "background-color: lightyellow" : "";
+}
+
+@* @Html.TextBox("", Model, new { @class = "form-control", placeholder = "Enter data", style = "color:blue" }) *@
+@Html.TextBox("", Model, new { @class = "form-control", placeholder = "Enter data", style = style })

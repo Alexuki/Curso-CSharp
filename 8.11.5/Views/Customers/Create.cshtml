@@ -1,0 +1,22 @@
+@model CreateCustomerViewModel
+@{
+    ViewData["Title"] = "Create customer";
+}
+<h1>@ViewData["Title"]</h1>
+<hr />
+
+<form asp-controller="Customers" asp-action="Create" method="post">
+    <div class="form-group">
+        <label asp-for="Name"></label> <span asp-validation-for="Name"></span>
+        <input asp-for="Name" class="form-control">
+    </div>
+    <div class="form-group">
+        <label asp-for="Email"></label> <span asp-validation-for="Email"></span>
+        <input asp-for="Email" class="form-control">
+    </div>
+    <div class="form-group">
+        <label asp-for="Type"></label> <span asp-validation-for="Type"></span>
+        <select asp-for="Type" class="form-control" asp-items="@Html.GetEnumSelectList(typeof(CustomerType))"></select>
+    </div>
+    <button>Send</button>
+</form>

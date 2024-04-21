@@ -1,0 +1,22 @@
+<h1>Create friend</h1>
+<form method="post" action="@Url.Action("Create", "Friends")">
+    @* <label>Name:</label><br />
+    <input type="text" name="name" /><br />
+
+    <label>Age:</label><br />
+    <input type="text" name="age" /><br />
+
+    <label>Email:</label><br />
+    <input type="text" name="email" />
+    <hr />
+
+    <!-- 7) Propiedad compleja añadida -->
+    <label>Street:</label><br />
+    <input type="text" name="address.street" />
+    <hr />
+    <label>City:</label><br />
+    <input type="text" name="address.city" />
+    <hr /> *@
+    
+    <input type="submit" value="Submit" />
+</form>

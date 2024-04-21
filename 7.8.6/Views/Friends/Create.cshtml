@@ -1,0 +1,48 @@
+@model Friend
+
+@{
+    ViewData["Title"] = "Create friend";
+}
+
+<h2>@ViewData["Title"]</h2>
+@if (ViewData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @ViewData["ErrorMessage"]
+    </div>
+}
+
+<form method="post" action="/friends/create">
+
+    <label for="name">Name:</label>
+    @if (ViewData["NameError"] != null)
+    {
+        <span class="text-danger">
+            * @ViewData["NameError"]
+        </span>
+    }
+    <input type="text" name="name" value="@Model.Name" /><br />
+
+    <label for="age">Age:</label>
+    @if (ViewData["AgeError"] != null)
+    {
+        <span class="text-danger">
+            * @ViewData["AgeError"]
+        </span>
+    }
+    <input type="text" name="age" value="@Model.Age"/><br/>
+
+    <label for="email">Email:</label>
+    <input type="text" name="email" value="@Model.Email"/><br/>
+
+    <label for="street">Street:</label>
+    <input type="text" name="address.street" value="@Model.Address.Street"/><br/>
+
+    <label for="city">City:</label>
+    <input type="text" name="address.city" value="@Model.Address.City"/><br/>
+
+    <label for="zipCode">ZipCode:</label>
+    <input type="text" name="address.zipCode" value="@Model.Address.ZipCode"/>
+
+    <input type="submit" value="Submit">
+</form>
